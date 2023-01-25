@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Document</title>
+</head>
+
+<body onload="onInit()">
+    <div class="box">
+        <div class="menu">
+            <div class="mines-count">0<span>00</span></div>
+            <h1>Mine sweeper</h1>
+            <div class="timer">000</div>
+            <div class="lvls">
+                <h2>choose difficulty</h2>
+                <button onclick="setLvl(4,2)">Beginner</button>
+                <button onclick="setLvl(6,14)">Medium</button>
+                <button onclick="setLvl(12,32)">Expert</button>
+            </div>
+            <button onclick="onInit()" class="reset">😁</button>
+            <p>lives:<span></span></p>
+            
+        </div>
+        <table>
+        </table class="mine-field">
+    </div>
+    <div class="modal">
+        <h2 class="user-msg">GAME OVER</h2>
+        <h3></h3>
+        <button class="restart-btn" onclick="onInit()">play again</button>
+    </div>
+
+    <footer class="footer">
+        <h3>Tomer Huberman</h3>
+    </footer>
+
+    <script src="js/util.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
