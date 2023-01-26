@@ -338,6 +338,29 @@ function magaHint() {
     if (gGame.isMagaHintUsed) return
     gGame.isMagaHint = true
 }
+
+function activeExterminator() {
+    const poss = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+            var currCell = gBoard[i][j]
+            if (currCell.isMine && !currCell.isMarked && !currCell.isShown) {
+                poss.push({ i, j })
+            }
+        }
+    }
+    for (var j = 0; j < 3 ; j++) {
+        if (!poss.length) break
+        var randomIdx = getRandomInt(0, poss.length)
+        var pos = poss.splice(randomIdx, 1)[0]
+        console.log("pos: ", pos);
+        gBoard[pos.i][pos.j].isMine = false
+        gGame.minesCount--
+    }
+    setMinesNegsCount(gBoard)
+    renderMineCount()
+    renderAllCells()
+}
 /*^^^^^^END^^^^^^^^^^^^^^^^ON CLICK^^^^^^^^^^^^^^^^^^END^^^^^^^^^^*/
 
 /*__________START___________FOLLOW UPS____________START__________*/
