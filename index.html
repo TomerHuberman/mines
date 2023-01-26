@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 
-<body onload="onInit()">
+<body class="" onload="onInit()">
     <div class="box">
         <div class="menu">
             <div class="mines-count">0<span>00</span></div>
@@ -18,9 +18,11 @@
             <div class="lvls">
                 <h2>choose difficulty</h2>
                 <button class="safe-clicks" onclick="activeSafeClick()">safe click: <span>3</span></button>
+                <button class="undo" onclick="activeUndo()">🔙</button>
                 <button class="btn-lvl" onclick="setLvl(4,2)">Beginner</button>
                 <button class="btn-lvl" onclick="setLvl(6,14)">Medium</button>
                 <button class="btn-lvl" onclick="setLvl(12,32)">Expert</button>
+                <button class="btn-manually" onclick="activeManually(this)">⚒️manually⚒️</button>
             </div>
             <button class="hint" onclick="activeHint(this)"><img src="img/hint.png" alt="hint icon"></button>
             <button class="hint" onclick="activeHint(this)"><img src="img/hint.png" alt="hint icon"></button>
@@ -32,6 +34,9 @@
         </div>
         <table>
         </table class="mine-field">
+        <button id="Exterminator" onclick=""><img src="img/Exterminator.png" alt="Exterminator"></button>
+        <button id="dark-mode" onclick="darkMode(this)">Dark mode</button>
+        <button id="maga-hint" onclick="magaHint()">Maga hint!</button>
     </div>
     <div class="modal">
         <h2 class="user-msg">GAME OVER</h2>
@@ -40,7 +45,7 @@
     </div>
 
     <footer class="footer">
-        <h3>Tomer Huberman</h3>
+        <h3>Tomer Huberman</h3> 
     </footer>
 
     <script src="js/util.js"></script>

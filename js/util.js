@@ -11,6 +11,8 @@ function getAllBoardPoss(board) {
     return elemantPoss
 }
 
+
+
 function getRandomInt(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
