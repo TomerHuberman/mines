@@ -17,12 +17,17 @@
             <div class="timer">000</div>
             <div class="lvls">
                 <h2>choose difficulty</h2>
-                <button onclick="setLvl(4,2)">Beginner</button>
-                <button onclick="setLvl(6,14)">Medium</button>
-                <button onclick="setLvl(12,32)">Expert</button>
+                <button class="safe-clicks" onclick="activeSafeClick()">safe click: <span>3</span></button>
+                <button class="btn-lvl" onclick="setLvl(4,2)">Beginner</button>
+                <button class="btn-lvl" onclick="setLvl(6,14)">Medium</button>
+                <button class="btn-lvl" onclick="setLvl(12,32)">Expert</button>
             </div>
+            <button class="hint" onclick="activeHint(this)"><img src="img/hint.png" alt="hint icon"></button>
+            <button class="hint" onclick="activeHint(this)"><img src="img/hint.png" alt="hint icon"></button>
+            <button class="hint" onclick="activeHint(this)"><img src="img/hint.png" alt="hint icon"></button>
             <button onclick="onInit()" class="reset">😁</button>
-            <p>lives:<span></span></p>
+            <p class="best-score">best score: <span></span></p>
+            <p id="lives">lives:<span></span></p>
             
         </div>
         <table>

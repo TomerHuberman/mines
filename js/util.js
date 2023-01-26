@@ -5,7 +5,7 @@ function getAllBoardPoss(board) {
     const elemantPoss = []
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
-                elemantPoss.push({ i, j })
+            elemantPoss.push({ i, j })
         }
     }
     return elemantPoss
