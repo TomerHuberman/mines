@@ -17,7 +17,7 @@
             <div class="timer">000</div>
             <div class="lvls">
                 <h2>choose difficulty</h2>
-                <button class="safe-clicks" onclick="activeSafeClick()">safe click: <span>3</span></button>
+                <button class="safe-clicks" onclick="activeSafeClick(this)">safe click: <span>3</span></button>
                 <button class="undo" onclick="activeUndo()">🔙</button>
                 <button class="btn-lvl" onclick="setLvl(4,2)">Beginner</button>
                 <button class="btn-lvl" onclick="setLvl(6,14)">Medium</button>
@@ -36,7 +36,7 @@
         </table class="mine-field">
         <button id="Exterminator" onclick="activeExterminator()"><img src="img/Exterminator.png" alt="Exterminator"></button>
         <button id="dark-mode" onclick="darkMode(this)">Dark mode</button>
-        <button id="maga-hint" onclick="magaHint()">Maga hint!</button>
+        <button id="maga-hint" onclick="magaHint(this)">Maga hint!</button>
     </div>
     <div class="modal">
         <h2 class="user-msg">GAME OVER</h2>

@@ -40,10 +40,8 @@ const WON = '🍾'
 
 /*--------START---------ON GAME START-----------START------------ */
 function onInit() {
-    // gGameHistory = []
-    var elModal = document.querySelector('.modal')
-    elModal.style.display = 'none'
-    // gGame.isOn = true
+
+    // reset game vars
     gGame.isFirstClick = true
     gGame.lives = 3
     gGame.minesCount = gLevel.MINES
@@ -52,9 +50,13 @@ function onInit() {
     gGame.lastPos = []
     gGame.magaHintPoss = []
     gGame.isMagaHintUsed = false
+    //////////////////////////////
+    //timer
     clearInterval(gTimerInterval)
     gTimerInterval = null
     startTimer()
+    /////////////////
+    //renders
     renderReset(SMILE)
     buildBoard(gLevel.SIZE)
     renderBoard()
@@ -63,6 +65,7 @@ function onInit() {
     resetHints()
     renderBestScore()
     renderSafeClicks()
+    renderResetBtns()
 }
 
 function startGame(elCell, i, j) {
@@ -103,18 +106,11 @@ function buildBoard(size) {
 }
 
 function renderBoard() {
-
     var strHTML = '<tbody>'
     for (var i = 0; i < gBoard.length; i++) {
-
         strHTML += '<tr>'
         for (var j = 0; j < gBoard[0].length; j++) {
-
-
             var className = `cell cell-${i}-${j}`
-            // if(gBoard[i][j].isShown) className += ` clicked`
-            // const dataIAndJ = `data-i${j}`
-
             strHTML += `<td onclick="onCellClicked(this,${i},${j}) "onContextMenu="onCellMarked(this,${i},${j})" class="${className}"></td>`
         }
         strHTML += '</tr>'
@@ -156,15 +152,14 @@ function renderBestScore() {
 
 function setRandomMines(board, numOfMines, firstPos) {
     var poss = getAllBoardPoss(board)
-
     for (var i = 0; i < numOfMines; i++) {
         var randomIdx = getRandomInt(0, poss.length)
         var currPos = poss.splice(randomIdx, 1)[0]
+
         if (currPos.i === firstPos.i && currPos.j === firstPos.j) {
             currPos = poss.splice(randomIdx, 1)[0]
         }
         board[currPos.i][currPos.j].isMine = true
-
     }
 }
 
@@ -198,9 +193,9 @@ function getMineNegsCount(rowIdx, colIdx, board) {
 function onCellClicked(elCell, i, j) {
     if (gBoard[i][j].isMarked) return
     if (gBoard[i][j].isShown) return
-
     addEventListener('mousedown', (event) => { renderReset(SCERED) });
     addEventListener('mouseup', (event) => { renderReset(SMILE) });
+
     if (gGame.isManually) {
         gBoard[i][j].isMine = true
         gGame.minesCount++
@@ -208,7 +203,7 @@ function onCellClicked(elCell, i, j) {
         elCell.innerText = MINE
         return
     }
-
+    // prevents the first click to be a mine
     if (gGame.isFirstClick) {
         gGame.isFirstClick = false
         startGame(elCell, i, j)
@@ -224,13 +219,14 @@ function onCellClicked(elCell, i, j) {
         activeMegaHint({ i, j })
         return
     }
-    // gBoard[i][j].isShown = true
+    //update the model and dome
     renderCell({ i, j })
     if (gBoard[i][j].isMine) clickedMine(elCell)
-
-    // if (!gGame.isExpending) gGameHistory.push(copyBoard(gBoard))
+    //hendal expend of no negs mines
     if (!gBoard[i][j].minesAroundCount && !gBoard[i][j].isMine && !gGame.isHint) expandShown(gBoard, i, j)
+
     if (!gGame.isHint) checkGameOver(true)
+    // the data for undo
     gGame.lastPos.push({ i, j })
 
 
@@ -250,9 +246,7 @@ function onCellMarked(elCell, i, j) {
     if (gBoard[i][j].isShown) return
     if (!gGame.isOn) return
 
-
     gBoard[i][j].isMarked = !gBoard[i][j].isMarked
-    // elCell.innerText = gBoard[i][j].isMarked ? FLAG : EMPTY
     if (gBoard[i][j].isMarked) {
         elCell.innerText = FLAG
         gGame.minesCount--
@@ -270,10 +264,11 @@ function activeHint(elHint) {
     elHint.disabled = true
 }
 
-function activeSafeClick() {
+function activeSafeClick(elBtn) {
     if (!gGame.safeClick) return
     if (!gGame.isOn) return
     gGame.safeClick--
+    if(!gGame.safeClick) elBtn.classList.add('btnUsed') 
     renderSafeClicks()
     const pos = getRandomSafePos()
     const elCell = renderCell(pos)
@@ -303,16 +298,24 @@ function activeUndo() {
     closeCell(currPoss)
 }
 
+function magaHint(elMagaBtn) {
+    if (gGame.isMagaHintUsed) return
+    gGame.isMagaHint = true
+    elMagaBtn.classList.add('btnUsed')
+}
+
 function activeMegaHint(pos) {
     gGame.magaHintPoss.push(pos)
     if (gGame.magaHintPoss.length < 2) return
     gGame.isMagaHint = false
     gGame.isMagaHintUsed = true
     const poss = gGame.magaHintPoss
+
     var iStartIdx = poss[0].i > poss[1].i ? poss[1].i : poss[0].i
     var iEndIdx = poss[0].i < poss[1].i ? poss[1].i : poss[0].i
     var jStartIdx = poss[0].j > poss[1].j ? poss[1].j : poss[0].j
     var jEndIdx = poss[0].j < poss[1].j ? poss[1].j : poss[0].j
+
     for (var i = iStartIdx; i <= iEndIdx; i++) {
         for (var j = jStartIdx; j <= jEndIdx; j++) {
             if (gBoard[i][j].isShown || gBoard[i][j].isMarked) continue
@@ -334,11 +337,6 @@ function darkMode(elBtn) {
     elmenu.classList.toggle('dark-mode')
 }
 
-function magaHint() {
-    if (gGame.isMagaHintUsed) return
-    gGame.isMagaHint = true
-}
-
 function activeExterminator() {
     const poss = []
     for (var i = 0; i < gBoard.length; i++) {
@@ -349,7 +347,7 @@ function activeExterminator() {
             }
         }
     }
-    for (var j = 0; j < 3 ; j++) {
+    for (var j = 0; j < 3; j++) {
         if (!poss.length) break
         var randomIdx = getRandomInt(0, poss.length)
         var pos = poss.splice(randomIdx, 1)[0]
@@ -364,6 +362,15 @@ function activeExterminator() {
 /*^^^^^^END^^^^^^^^^^^^^^^^ON CLICK^^^^^^^^^^^^^^^^^^END^^^^^^^^^^*/
 
 /*__________START___________FOLLOW UPS____________START__________*/
+function renderResetBtns(){
+    const elModal = document.querySelector('.modal')
+    elModal.style.display = 'none'
+    const elMagaBtn = document.querySelector('#maga-hint')
+    elMagaBtn.classList.remove('btnUsed')
+    const elSafeClickBtn = document.querySelector('.safe-clicks')
+    elSafeClickBtn.classList.remove('btnUsed')
+}
+
 function renderSafeClicks() {
     const elSafeClickCount = document.querySelector('.safe-clicks span')
     elSafeClickCount.innerText = gGame.safeClick
@@ -455,7 +462,6 @@ function expandShown(board, rowIdx, colIdx) {
             onCellClicked(elCell, i, j)
         }
     }
-
     gGame.isExpending = false
     gGame.isHint = false
 }
@@ -524,9 +530,7 @@ function copyBoard(board) {
     return newBoard
 }
 
-
 /*__________END_____________FOLLOW UPS_____________END__________*/
-
 
 function checkGameOver() {
     for (var i = 0; i < gBoard.length; i++) {
@@ -570,6 +574,7 @@ function openModal(isWon) {
     gGame.isOn = false
     var elModalSpan = document.querySelector('.modal h3')
     elModalSpan.innerText = isWon ? '🎊YOU WON🎊' : 'Try agein'
+
     var elModal = document.querySelector('.modal')
     elModal.style.display = 'block'
     if (isWon) updateBestScore()

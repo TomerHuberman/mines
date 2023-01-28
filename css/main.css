@@ -23,7 +23,7 @@ footer {
     border-bottom: 2px white solid;
 }
 
-#Exterminator{
+#Exterminator {
     background-color: transparent;
     border: 0;
     top: 155px;
@@ -31,7 +31,7 @@ footer {
     margin-left: 136px;
 }
 
-#maga-hint{
+#maga-hint {
     height: fit-content;
     background-color: #e34949;
     color: wheat;
@@ -45,11 +45,11 @@ footer {
     border-top-left-radius: 40%;
 }
 
-footer.dark-mode{
+footer.dark-mode {
     background: repeating-linear-gradient(160deg, #000000, #120d00, #201703, #181106, #1e0c01e3 36px);
 }
 
-.menu.dark-mode{
+.menu.dark-mode {
     background: content-box radial-gradient(#0a0101, #560707, #bd4207bf);
     color: whitesmoke;
 }
@@ -237,10 +237,13 @@ table {
     left: calc(50% - 150px);
 }
 
-
-
 .hint {
     padding: 0px;
     border-radius: 50%;
     background-color: #fde906;
+}
+
+.btnUsed {
+    background: repeating-linear-gradient(160deg, #000000, #120d00, #201703, #181106, #1e0c01e3 36px);
+    cursor: default;
 }
